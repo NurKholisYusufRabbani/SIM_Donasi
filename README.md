@@ -1,66 +1,158 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem Informasi Manajemen Donasi (SIM Donasi)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem Informasi Manajemen Donasi (SIM Donasi) adalah aplikasi web yang dirancang untuk mengelola proses donasi, mulai dari pencatatan donatur, penerimaan donasi, hingga distribusi kepada penerima manfaat. Aplikasi ini dibangun menggunakan **Laravel** sebagai *framework* *backend*.
 
-## About Laravel
+## 🚀 Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Pengelolaan Donasi
+* **Pencatatan Donasi**: Mencatat donasi uang atau barang dengan detail jumlah/deskripsi barang, tanggal, dan status (pending, diterima, ditolak).
+* **Donatur**: Mengelola profil donatur yang terkait dengan akun pengguna.
+* **Penerima Donasi (Beneficiaries)**: Mengelola data individu atau lembaga yang menerima distribusi donasi.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Pengelolaan Distribusi
+* **Distribusi Donasi**: Mencatat rincian distribusi donasi kepada penerima, termasuk jumlah dan siapa yang mendistribusikan.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Manajemen Pengguna
+* **Otentikasi**: Sistem login dan registrasi pengguna (dengan Laravel Breeze).
+* **Roles**: Pengguna memiliki role (`admin`, `donator`, `user`).
+    * **Admin**: Memiliki akses penuh ke seluruh fitur pengelolaan (donasi, distribusi, beneficiaries, pengguna).
+    * **Donatur**: Dapat melihat dan membuat donasi yang mereka berikan, serta melengkapi profil donatur mereka.
+    * **User**: Role dasar.
 
-## Learning Laravel
+## 🛠️ Persyaratan Sistem (Backend)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Pastikan lingkungan pengembangan Anda memenuhi persyaratan Laravel:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+* PHP >= 8.1
+* Composer
+* Database (MySQL direkomendasikan)
+* Node.js & npm (untuk frontend dependencies Breeze)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 📦 Instalasi (Backend)
 
-## Laravel Sponsors
+Ikuti langkah-langkah di bawah ini untuk menyiapkan lingkungan *backend*:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+1.  **Clone Repository**:
+    ```bash
+    git clone <URL_REPOSITORY_ANDA>
+    cd sim-donasi
+    ```
 
-### Premium Partners
+2.  **Instal Dependensi Composer**:
+    ```bash
+    composer install
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+3.  **Konfigurasi Environment**:
+    * Buat file `.env` dari `.env.example`:
+        ```bash
+        cp .env.example .env
+        ```
+    * Generate application key:
+        ```bash
+        php artisan key:generate
+        ```
+    * Edit file `.env` dan konfigurasi database Anda:
+        ```ini
+        DB_CONNECTION=mysql
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_DATABASE=sim_donasi # Ganti dengan nama database Anda
+        DB_USERNAME=root      # Ganti dengan username database Anda
+        DB_PASSWORD=          # Ganti dengan password database Anda
+        ```
 
-## Contributing
+4.  **Jalankan Migrasi Database**:
+    Ini akan membuat tabel-tabel database yang diperlukan.
+    ```bash
+    php artisan migrate
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+5.  **Jalankan Database Seeder (Opsional tapi Direkomendasikan)**:
+    Ini akan mengisi database dengan beberapa data awal, termasuk user admin.
+    ```bash
+    php artisan db:seed
+    ```
+    * **Login Admin**: Anda bisa login dengan `admin@example.com` dan password `password123`.
+    * **Login Donatur**: `donator@example.com` dan password `password123`.
+    * **Login User Biasa**: `user@example.com` dan password `password123`.
+    *(Pastikan Anda telah membuat `AdminUserSeeder.php` seperti yang dijelaskan di diskusi sebelumnya)*
 
-## Code of Conduct
+6.  **Instal Dependensi NPM & Kompilasi Frontend Assets (Breeze)**:
+    ```bash
+    npm install
+    npm run dev # Untuk development, atau npm run build untuk produksi
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+7.  **Jalankan Server Lokal Laravel**:
+    ```bash
+    php artisan serve
+    ```
+    Aplikasi akan tersedia di `http://127.0.0.1:8000` (atau port lain).
 
-## Security Vulnerabilities
+## 🗺️ Struktur API (Routes & Controller)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Sebagai *developer* *frontend*, penting untuk memahami *endpoints* yang tersedia. Aplikasi ini menggunakan rute berbasis resource untuk sebagian besar manajemen data.
 
-## License
+Semua rute di bawah `Route::middleware('auth')` memerlukan **otentikasi pengguna** (login).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Umum (Akses oleh User Terautentikasi - `user`, `donator`, `admin`)
+
+| Resource      | Method | URL                      | Route Name                | Controller Action | Keterangan                                   |
+| :------------ | :----- | :----------------------- | :------------------------ | :---------------- | :------------------------------------------- |
+| **Donations** | GET    | `/donations`             | `donations.index`         | `index`           | Daftar donasi (semua untuk admin, miliknya untuk donatur) |
+|               | POST   | `/donations`             | `donations.store`         | `store`           | Simpan donasi baru                           |
+|               | GET    | `/donations/create`      | `donations.create`        | `create`          | Form pembuatan donasi                        |
+|               | GET    | `/donations/{donation}`  | `donations.show`          | `show`            | Detail donasi (otorisasi di controller)      |
+|               | PUT/PATCH| `/donations/{donation}` | `donations.update`        | `update`          | Update donasi (hanya admin)                  |
+|               | DELETE | `/donations/{donation}`  | `donations.destroy`       | `destroy`         | Hapus donasi (hanya admin)                   |
+|               | GET    | `/donations/{donation}/edit`| `donations.edit`       | `edit`            | Form edit donasi (hanya admin)               |
+| **Donors** | GET    | `/donors`                | `donors.index`            | `index`           | Daftar donor (admin), Profil donor sendiri (donatur) |
+|               | POST   | `/donors`                | `donors.store`            | `store`           | Buat/lengkapi profil donor                   |
+|               | GET    | `/donors/create`         | `donors.create`           | `create`          | Form pembuatan/lengkapi profil donor         |
+|               | GET    | `/donors/{donor}`        | `donors.show`             | `show`            | Detail profil donor (admin atau miliknya)    |
+|               | PUT/PATCH| `/donors/{donor}`       | `donors.update`           | `update`          | Update profil donor                          |
+|               | GET    | `/donors/{donor}/edit`   | `donors.edit`             | `edit`            | Form edit profil donor                       |
+|               | DELETE | `/donors/{donor}`        | `donors.destroy`          | `destroy`         | Hapus profil donor (hanya admin)             |
+| **Distributions**| GET | `/distributions`         | `distributions.index`     | `index`           | Daftar distribusi (semua untuk admin, miliknya untuk distributor) |
+|               | POST   | `/distributions`         | `distributions.store`     | `store`           | Simpan distribusi baru                       |
+|               | GET    | `/distributions/create`  | `distributions.create`    | `create`          | Form pembuatan distribusi                    |
+|               | GET    | `/distributions/{distribution}`| `distributions.show` | `show`            | Detail distribusi (otorisasi di controller)  |
+|               | PUT/PATCH| `/distributions/{distribution}`| `distributions.update`| `update`          | Update distribusi (hanya admin)              |
+|               | DELETE | `/distributions/{distribution}`| `distributions.destroy`| `destroy`         | Hapus distribusi (hanya admin)               |
+|               | GET    | `/distributions/{distribution}/edit`| `distributions.edit`| `edit`            | Form edit distribusi (hanya admin)           |
+
+### Khusus Admin (`Route::middleware(['auth', 'admin'])`)
+
+| Resource      | Method | URL                      | Route Name                | Controller Action | Keterangan                                   |
+| :------------ | :----- | :----------------------- | :------------------------ | :---------------- | :------------------------------------------- |
+| **Beneficiaries**| GET | `/beneficiaries`         | `beneficiaries.index`     | `index`           | Daftar penerima donasi                       |
+|               | POST   | `/beneficiaries`         | `beneficiaries.store`     | `store`           | Simpan penerima donasi baru                  |
+|               | GET    | `/beneficiaries/create`  | `beneficiaries.create`    | `create`          | Form pembuatan penerima donasi               |
+|               | GET    | `/beneficiaries/{beneficiary}`| `beneficiaries.show` | `show`            | Detail penerima donasi                       |
+|               | PUT/PATCH| `/beneficiaries/{beneficiary}`| `beneficiaries.update`| `update`          | Update penerima donasi                       |
+|               | DELETE | `/beneficiaries/{beneficiary}`| `beneficiaries.destroy`| `destroy`         | Hapus penerima donasi                        |
+|               | GET    | `/beneficiaries/{beneficiary}/edit`| `beneficiaries.edit`| `edit`            | Form edit penerima donasi                    |
+| **Users** | GET    | `/users`                 | `users.index`             | `index`           | Daftar semua pengguna sistem                 |
+|               | GET    | `/users/{user}`          | `users.show`              | `show`            | Detail pengguna                              |
+|               | PUT/PATCH| `/users/{user}`         | `users.update`            | `update`          | Update profil pengguna (tidak termasuk password) |
+|               | GET    | `/users/{user}/edit`     | `users.edit`              | `edit`            | Form edit pengguna                           |
+|               | PATCH  | `/users/{user}/update-role`| `users.updateRole`      | `updateRole`      | Endpoint untuk mengubah role pengguna        |
+|               | DELETE | `/users/{user}`          | `users.destroy`           | `destroy`         | Hapus pengguna                               |
+
+## 🔑 Otentikasi dan Otorisasi
+
+* **Login/Register**: Menggunakan Laravel Breeze.
+* **Role-Based Access Control**:
+    * Backend menerapkan validasi berdasarkan role pengguna (`admin`, `donator`, `user`).
+    * Pastikan *frontend* Anda juga memvalidasi dan menyembunyikan/menampilkan elemen UI berdasarkan role pengguna yang sedang login.
+    * Objek `Auth::user()` tersedia di *backend* untuk mendapatkan informasi pengguna yang sedang login, termasuk `role`.
+
+## 🤝 Kontribusi Frontend
+
+* Jika Anda memiliki pertanyaan tentang *backend* atau memerlukan *endpoint* tambahan, silakan hubungi *backend*.
+* Laporkan setiap masalah atau *bug* yang Anda temukan.
+
+---
+
+Semoga README ini membantu *developer* *frontend*!
