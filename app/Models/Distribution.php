@@ -12,6 +12,7 @@ class Distribution extends Model
     protected $fillable = [
         'donation_id',
         'distributed_by', // Foreign key ke users.id
+        'distributed_at',
         'amount',
         'description',
         'date', // Mengganti 'distributed_at' jadi 'date' untuk konsistensi. Jika tidak, bisa tetap distributed_at.

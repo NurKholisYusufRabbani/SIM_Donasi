@@ -59,7 +59,7 @@ class DonorController extends Controller
 
         // Opsional: perbarui role user menjadi 'donator'
         if (Auth::user()->role === 'user') { // Hanya ubah jika role-nya masih default 'user'
-            Auth::user()->update(['role' => 'donator']);
+            Auth::user()->update(['role' => 'donatur']);
         }
 
         return redirect()->route('donors.index')->with('success', 'Profil donatur berhasil dilengkapi!');
