@@ -14,10 +14,11 @@ Sistem Informasi Manajemen Donasi (SIM Donasi) adalah aplikasi web yang dirancan
 
 ### Manajemen Pengguna
 * **Otentikasi**: Sistem login dan registrasi pengguna (dengan Laravel Breeze).
-* **Roles**: Pengguna memiliki role (`admin`, `donator`, `user`).
+* **Roles**: Pengguna memiliki role (`admin`, `donator`, `user`, `distributor`).
     * **Admin**: Memiliki akses penuh ke seluruh fitur pengelolaan (donasi, distribusi, beneficiaries, pengguna).
     * **Donatur**: Dapat melihat dan membuat donasi yang mereka berikan, serta melengkapi profil donatur mereka.
-    * **User**: Role dasar.
+    * **User**: Role default.
+    * **Distributor**: Dapat melihat riwayat dan melakukan distribusi kepada beneficiary.
 
 ## 🛠️ Persyaratan Sistem (Backend)
 
@@ -90,69 +91,10 @@ Ikuti langkah-langkah di bawah ini untuk menyiapkan lingkungan *backend*:
     ```
     Aplikasi akan tersedia di `http://127.0.0.1:8000` (atau port lain).
 
-## 🗺️ Struktur API (Routes & Controller)
-
-Sebagai *developer* *frontend*, penting untuk memahami *endpoints* yang tersedia. Aplikasi ini menggunakan rute berbasis resource untuk sebagian besar manajemen data.
-
-Semua rute di bawah `Route::middleware('auth')` memerlukan **otentikasi pengguna** (login).
-
-### Umum (Akses oleh User Terautentikasi - `user`, `donator`, `admin`)
-
-| Resource      | Method | URL                      | Route Name                | Controller Action | Keterangan                                   |
-| :------------ | :----- | :----------------------- | :------------------------ | :---------------- | :------------------------------------------- |
-| **Donations** | GET    | `/donations`             | `donations.index`         | `index`           | Daftar donasi (semua untuk admin, miliknya untuk donatur) |
-|               | POST   | `/donations`             | `donations.store`         | `store`           | Simpan donasi baru                           |
-|               | GET    | `/donations/create`      | `donations.create`        | `create`          | Form pembuatan donasi                        |
-|               | GET    | `/donations/{donation}`  | `donations.show`          | `show`            | Detail donasi (otorisasi di controller)      |
-|               | PUT/PATCH| `/donations/{donation}` | `donations.update`        | `update`          | Update donasi (hanya admin)                  |
-|               | DELETE | `/donations/{donation}`  | `donations.destroy`       | `destroy`         | Hapus donasi (hanya admin)                   |
-|               | GET    | `/donations/{donation}/edit`| `donations.edit`       | `edit`            | Form edit donasi (hanya admin)               |
-| **Donors** | GET    | `/donors`                | `donors.index`            | `index`           | Daftar donor (admin), Profil donor sendiri (donatur) |
-|               | POST   | `/donors`                | `donors.store`            | `store`           | Buat/lengkapi profil donor                   |
-|               | GET    | `/donors/create`         | `donors.create`           | `create`          | Form pembuatan/lengkapi profil donor         |
-|               | GET    | `/donors/{donor}`        | `donors.show`             | `show`            | Detail profil donor (admin atau miliknya)    |
-|               | PUT/PATCH| `/donors/{donor}`       | `donors.update`           | `update`          | Update profil donor                          |
-|               | GET    | `/donors/{donor}/edit`   | `donors.edit`             | `edit`            | Form edit profil donor                       |
-|               | DELETE | `/donors/{donor}`        | `donors.destroy`          | `destroy`         | Hapus profil donor (hanya admin)             |
-| **Distributions**| GET | `/distributions`         | `distributions.index`     | `index`           | Daftar distribusi (semua untuk admin, miliknya untuk distributor) |
-|               | POST   | `/distributions`         | `distributions.store`     | `store`           | Simpan distribusi baru                       |
-|               | GET    | `/distributions/create`  | `distributions.create`    | `create`          | Form pembuatan distribusi                    |
-|               | GET    | `/distributions/{distribution}`| `distributions.show` | `show`            | Detail distribusi (otorisasi di controller)  |
-|               | PUT/PATCH| `/distributions/{distribution}`| `distributions.update`| `update`          | Update distribusi (hanya admin)              |
-|               | DELETE | `/distributions/{distribution}`| `distributions.destroy`| `destroy`         | Hapus distribusi (hanya admin)               |
-|               | GET    | `/distributions/{distribution}/edit`| `distributions.edit`| `edit`            | Form edit distribusi (hanya admin)           |
-
-### Khusus Admin (`Route::middleware(['auth', 'admin'])`)
-
-| Resource      | Method | URL                      | Route Name                | Controller Action | Keterangan                                   |
-| :------------ | :----- | :----------------------- | :------------------------ | :---------------- | :------------------------------------------- |
-| **Beneficiaries**| GET | `/beneficiaries`         | `beneficiaries.index`     | `index`           | Daftar penerima donasi                       |
-|               | POST   | `/beneficiaries`         | `beneficiaries.store`     | `store`           | Simpan penerima donasi baru                  |
-|               | GET    | `/beneficiaries/create`  | `beneficiaries.create`    | `create`          | Form pembuatan penerima donasi               |
-|               | GET    | `/beneficiaries/{beneficiary}`| `beneficiaries.show` | `show`            | Detail penerima donasi                       |
-|               | PUT/PATCH| `/beneficiaries/{beneficiary}`| `beneficiaries.update`| `update`          | Update penerima donasi                       |
-|               | DELETE | `/beneficiaries/{beneficiary}`| `beneficiaries.destroy`| `destroy`         | Hapus penerima donasi                        |
-|               | GET    | `/beneficiaries/{beneficiary}/edit`| `beneficiaries.edit`| `edit`            | Form edit penerima donasi                    |
-| **Users** | GET    | `/users`                 | `users.index`             | `index`           | Daftar semua pengguna sistem                 |
-|               | GET    | `/users/{user}`          | `users.show`              | `show`            | Detail pengguna                              |
-|               | PUT/PATCH| `/users/{user}`         | `users.update`            | `update`          | Update profil pengguna (tidak termasuk password) |
-|               | GET    | `/users/{user}/edit`     | `users.edit`              | `edit`            | Form edit pengguna                           |
-|               | PATCH  | `/users/{user}/update-role`| `users.updateRole`      | `updateRole`      | Endpoint untuk mengubah role pengguna        |
-|               | DELETE | `/users/{user}`          | `users.destroy`           | `destroy`         | Hapus pengguna                               |
-
 ## 🔑 Otentikasi dan Otorisasi
 
 * **Login/Register**: Menggunakan Laravel Breeze.
 * **Role-Based Access Control**:
-    * Backend menerapkan validasi berdasarkan role pengguna (`admin`, `donator`, `user`).
+    * Backend menerapkan validasi berdasarkan role pengguna (`admin`, `donator`, `user`, `distributor`).
     * Pastikan *frontend* Anda juga memvalidasi dan menyembunyikan/menampilkan elemen UI berdasarkan role pengguna yang sedang login.
     * Objek `Auth::user()` tersedia di *backend* untuk mendapatkan informasi pengguna yang sedang login, termasuk `role`.
-
-## 🤝 Kontribusi Frontend
-
-* Jika Anda memiliki pertanyaan tentang *backend* atau memerlukan *endpoint* tambahan, silakan hubungi *backend*.
-* Laporkan setiap masalah atau *bug* yang Anda temukan.
-
----
-
-Semoga README ini membantu *developer* *frontend*!
