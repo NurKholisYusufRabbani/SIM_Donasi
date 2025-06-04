@@ -69,17 +69,7 @@ Ikuti langkah-langkah di bawah ini untuk menyiapkan lingkungan *backend*:
     php artisan migrate
     ```
 
-5.  **Jalankan Database Seeder (Opsional tapi Direkomendasikan)**:
-    Ini akan mengisi database dengan beberapa data awal, termasuk user admin.
-    ```bash
-    php artisan db:seed
-    ```
-    * **Login Admin**: Anda bisa login dengan `admin@example.com` dan password `password123`.
-    * **Login Donatur**: `donator@example.com` dan password `password123`.
-    * **Login User Biasa**: `user@example.com` dan password `password123`.
-    *(Pastikan Anda telah membuat `AdminUserSeeder.php` seperti yang dijelaskan di diskusi sebelumnya)*
-
-6.  **Instal Dependensi NPM & Kompilasi Frontend Assets (Breeze)**:
+5. **Instal Dependensi NPM & Kompilasi Frontend Assets (Breeze)**:
     ```bash
     npm install
     npm run dev # Untuk development, atau npm run build untuk produksi
