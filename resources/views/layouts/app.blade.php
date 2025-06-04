@@ -16,22 +16,34 @@
         @stack('scripts')
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('layouts.navigation')
+ <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700">
+    <!-- Isi sidebar -->
+    @include('layouts.sidebar')
+  </aside>
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
+  <!-- Konten utama -->
+  <div class="flex-1">
+    <!-- Navbar di atas konten -->
+    @include('layouts.navigation')
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+    <!-- Header halaman -->
+    @if (isset($header))
+      <header class="bg-white dark:bg-gray-800 shadow">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          {{ $header }}
         </div>
+      </header>
+    @endif
+
+    <!-- Konten halaman -->
+<main class="flex-1 bg-gray-100 dark:bg-gray-900">
+    {{ $slot }}
+</main>
+
+  </div>
+</div>
+
     </body>
 </html>
