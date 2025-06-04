@@ -35,7 +35,7 @@ Ikuti langkah-langkah di bawah ini untuk menyiapkan lingkungan *backend*:
 
 1.  **Clone Repository**:
     ```bash
-    git clone <URL_REPOSITORY_ANDA>
+    git clone <URL_REPOSITORY>
     cd sim-donasi
     ```
 
